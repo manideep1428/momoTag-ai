@@ -5,7 +5,6 @@ import groq
 import dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
-
 dotenv.load_dotenv()
 
 app = FastAPI()
@@ -19,11 +18,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all HTTP methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],  # Allows all headers
+    allow_headers=["*"],
 )
-
-
 
 @app.get("/")
 async def root():
@@ -37,10 +34,10 @@ async def sales_recommendations(input_data: PromptInput):
         model="llama-3.3-70b-versatile",
         messages=[
             {"role": "system", "content": sys_prompt},
-            {"role": "user", "content": input_data.prompt},  # Ensure this is a string
+            {"role": "user", "content": input_data.prompt},
         ],
         max_tokens=10000
     )
 
-    recommendations = response.choices[0].message.content
-    return {"sales_recommendations": recommendations.split("\n")}
+    recommendations = response.choices[0].message.content.split("\n")  # Ensure list format
+    return {"sales_recommendations": recommendations}  # Keep response consistent
