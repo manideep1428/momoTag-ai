@@ -12,6 +12,11 @@ groq_client = groq.Client(api_key=os.getenv("GROQ_API_KEY"))
 
 class PromptInput(BaseModel):
     prompt: str  # Ensure prompt is always a string
+    
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}    
+    
 
 @app.post("/sales-recommendations")
 async def sales_recommendations(input_data: PromptInput):
